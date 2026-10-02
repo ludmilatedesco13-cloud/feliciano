@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>¡Bienvenido Feliciano! 🐾👶</title>
+  <style>
+    :root {
+      --bg-color: #fff9f2;
+      --card-bg: #ffffff;
+      --primary: #f39c12;
+      --accent: #e67e22;
+      --soft-blue: #a8d8ea;
+      --text-color: #4a4a4a;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+      overflow-x: hidden;
+    }
+
+    .container {
+      background: var(--card-bg);
+      max-width: 480px;
+      width: 100%;
+      border-radius: 24px;
+      padding: 32px 24px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(243, 156, 18, 0.15);
+      border: 3px solid #ffe5d9;
+      position: relative;
+    }
+
+    /* Iconos/Decoraciones flotantes */
+    .floating-icon {
+      font-size: 1.8rem;
+      position: absolute;
+      animation: float 3s ease-in-out infinite alternate;
+    }
+    .icon-1 { top: -15px; left: 20px; animation-delay: 0s; }
+    .icon-2 { top: -15px; right: 20px; animation-delay: 1s; }
+    
+    @keyframes float {
+      from { transform: translateY(0); }
+      to { transform: translateY(-10px); }
+    }
+
+    h1 {
+      color: var(--accent);
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+      color: #7f8c8d;
+      margin-bottom: 20px;
+    }
+
+    /* Ilustración del gato Houdini */
+    .cat-illustration {
+      width: 160px;
+      height: 160px;
+      margin: 0 auto 20px;
+      background: #ffeaa7;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      box-shadow: inset 0 0 15px rgba(0,0,0,0.05);
+    }
+
+    .cat-avatar {
+      font-size: 5rem;
+      user-select: none;
+    }
+
+    .baby-props {
+      position: absolute;
+      bottom: 10px;
+      right: 15px;
+      font-size: 2rem;
+    }
+
+    /* Mensaje Principal */
+    .card-message {
+      background: #fff0f5;
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 24px;
+      border: 1px dashed #ffb6c1;
+    }
+
+    .card-message p {
+      font-size: 1rem;
+      line-height: 1.5;
+      color: #555;
+    }
+
+    /* Botón Interactivo */
+    .btn-surprise {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3);
+    }
+
+    .btn-surprise:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(230, 126, 34, 0.4);
+    }
+
+    /* Modal / Mensaje secreto */
+    .secret-message {
+      display: none;
+      margin-top: 20px;
+      padding: 15px;
+      background: #e8f8f5;
+      border-radius: 12px;
+      color: #16a085;
+      font-weight: 500;
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+  <!-- Script para el confeti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+
+  <div class="container">
+    <span class="floating-icon icon-1">🍼</span>
+    <span class="floating-icon icon-2">🧸</span>
+
+    <h1>¡Felicidades por la llegada de Feliciano! 🎉</h1>
+    <p class="subtitle">¡Bienvenido Feli al mundo! 💛</p>
+
+    <div class="cat-illustration">
+      <span class="cat-avatar">🐱 Orange Houdini</span>
+      <span class="baby-props">👶</span>
+    </div>
+
+    <div class="card-message">
+      <p>
+        <strong>Houdini</strong> ya está preparando sus patrullajes para cuidar al nuevo integrante de la familia. 🐾
+      </p>
+      <br/>
+      <p>
+        Les deseamos lo mejor en esta hermosa etapa de pañales, mamaderas y mucho amor.
+      </p>
+    </div>
+
+    <button class="btn-surprise" onclick="celebrate()">¡Apretar acá! ✨</button>
+
+    <div id="secretMessage" class="secret-message">
+      🐾 "Miau! Prometo compartir mis juguetes y hacerle compañía siempre" – Att: Houdini 🧡
+    </div>
+  </div>
+
+  <script>
+    // Tirar confeti automáticamente al cargar
+    window.addEventListener('DOMContentLoaded', () => {
+      confetti({
+        particleCount: 80,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
+    });
+
+    // Función al hacer clic en el botón
+    function celebrate() {
+      // Disparar más confeti
+      confetti({
+        particleCount: 120,
+        spread: 100,
+        origin: { y: 0.5 }
+      });
+
+      // Mostrar mensaje interactivo de Houdini
+      const msg = document.getElementById('secretMessage');
+      msg.style.display = 'block';
+    }
+  </script>
+</body>
+</html>
