@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
   <title>¡Una sorpresa para Feliciano! 🐾👶</title>
   <style>
     :root {
@@ -19,7 +19,8 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      -webkit-tap-highlight-color: transparent;
     }
 
     body {
@@ -29,48 +30,50 @@
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      padding: 20px;
+      min-height: -webkit-fill-available;
+      padding: 16px;
       overflow-x: hidden;
     }
 
-    /* VISTA 1: EL SOBRE / CARTITA */
+    /* VISTA 1: EL SOBRE / CARTITA (MOBILE FIRST) */
     .envelope-wrapper {
       position: relative;
       cursor: pointer;
       text-align: center;
-      transition: transform 0.3s ease;
-    }
-
-    .envelope-wrapper:hover {
-      transform: scale(1.03);
+      width: 100%;
+      max-width: 340px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     .envelope {
-      width: 300px;
-      height: 200px;
+      width: 100%;
+      aspect-ratio: 3 / 2;
       background: var(--envelope-color);
-      border-radius: 12px;
+      border-radius: 16px;
       position: relative;
-      box-shadow: 0 10px 25px rgba(230, 126, 34, 0.2);
+      box-shadow: 0 8px 20px rgba(230, 126, 34, 0.2);
       display: flex;
       justify-content: center;
       align-items: center;
       border: 2px solid #f3a683;
+      overflow: visible;
     }
 
-    /* Solapa del sobre */
+    /* Solapa adaptativa con clip-path */
     .flap {
       position: absolute;
       top: 0;
       left: 0;
-      right: 0;
-      height: 0;
-      border-left: 150px solid transparent;
-      border-right: 150px solid transparent;
-      border-top: 110px solid var(--envelope-flap);
+      width: 100%;
+      height: 55%;
+      background: var(--envelope-flap);
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
       transform-origin: top;
-      transition: transform 0.5s ease;
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
       z-index: 3;
+      border-radius: 12px 12px 0 0;
     }
 
     /* Sello con patita */
@@ -79,28 +82,29 @@
       z-index: 4;
       background: var(--accent);
       color: white;
-      width: 50px;
-      height: 50px;
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-      top: 85px;
+      top: calc(55% - 24px);
+      transition: opacity 0.3s ease;
     }
 
     .click-hint {
-      margin-top: 25px;
+      margin-top: 20px;
       font-weight: 600;
       color: var(--accent);
-      font-size: 1.1rem;
+      font-size: 1rem;
       animation: pulse 1.5s infinite alternate;
     }
 
     @keyframes pulse {
-      from { opacity: 0.6; transform: translateY(0); }
-      to { opacity: 1; transform: translateY(-5px); }
+      from { opacity: 0.7; transform: translateY(0); }
+      to { opacity: 1; transform: translateY(-4px); }
     }
 
     /* Animación al abrir */
@@ -109,97 +113,103 @@
       z-index: 1;
     }
 
+    .envelope-wrapper.open .stamp {
+      opacity: 0;
+    }
+
     .envelope-wrapper.open {
-      animation: fadeOut 0.6s forwards 0.4s;
+      animation: fadeOut 0.5s forwards 0.3s;
     }
 
     @keyframes fadeOut {
-      to { opacity: 0; transform: scale(0.8); display: none; }
+      to { opacity: 0; transform: scale(0.85); display: none; }
     }
 
-    /* VISTA 2: TARJETA INTERIOR */
+    /* VISTA 2: TARJETA INTERIOR (RESPONSIVE) */
     .container {
       display: none;
       background: var(--card-bg);
-      max-width: 460px;
       width: 100%;
-      border-radius: 24px;
-      padding: 32px 24px;
+      max-width: 420px;
+      border-radius: 20px;
+      padding: 24px 18px;
       text-align: center;
-      box-shadow: 0 10px 30px rgba(243, 156, 18, 0.15);
-      border: 3px solid #ffe5d9;
+      box-shadow: 0 10px 25px rgba(243, 156, 18, 0.15);
+      border: 2px solid #ffe5d9;
       position: relative;
-      animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
     }
 
     @keyframes popIn {
-      from { opacity: 0; transform: scale(0.5) translateY(50px); }
+      from { opacity: 0; transform: scale(0.8) translateY(30px); }
       to { opacity: 1; transform: scale(1) translateY(0); }
     }
 
     .floating-icon {
-      font-size: 1.8rem;
+      font-size: 1.5rem;
       position: absolute;
       animation: float 3s ease-in-out infinite alternate;
     }
-    .icon-1 { top: -15px; left: 20px; animation-delay: 0s; }
-    .icon-2 { top: -15px; right: 20px; animation-delay: 1s; }
+    .icon-1 { top: -12px; left: 16px; animation-delay: 0s; }
+    .icon-2 { top: -12px; right: 16px; animation-delay: 1s; }
     
     @keyframes float {
       from { transform: translateY(0); }
-      to { transform: translateY(-10px); }
+      to { transform: translateY(-8px); }
     }
 
     h1 {
       color: var(--accent);
-      font-size: 1.7rem;
-      margin-bottom: 8px;
+      font-size: 1.45rem;
+      line-height: 1.3;
+      margin-bottom: 6px;
+      margin-top: 8px;
     }
 
     .subtitle {
-      font-size: 1.1rem;
+      font-size: 1rem;
       color: #7f8c8d;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
 
-    /* Ilustración de Budín */
+    /* Ilustración adaptativa de Budín */
     .cat-illustration {
-      width: 150px;
-      height: 150px;
-      margin: 0 auto 20px;
+      width: 130px;
+      height: 130px;
+      margin: 0 auto 16px;
       background: #ffeaa7;
       border-radius: 50%;
       display: flex;
       justify-content: center;
       align-items: center;
       position: relative;
-      box-shadow: inset 0 0 15px rgba(0,0,0,0.05);
+      box-shadow: inset 0 0 12px rgba(0,0,0,0.05);
       border: 3px solid #f8c291;
     }
 
     .cat-avatar {
-      font-size: 5rem;
+      font-size: 4.2rem;
       user-select: none;
     }
 
     .baby-props {
       position: absolute;
-      bottom: 5px;
-      right: 10px;
-      font-size: 2.2rem;
+      bottom: 2px;
+      right: 6px;
+      font-size: 1.8rem;
     }
 
     .card-message {
       background: #fff0f5;
-      border-radius: 16px;
-      padding: 18px;
-      margin-bottom: 20px;
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 18px;
       border: 1px dashed #ffb6c1;
     }
 
     .card-message p {
-      font-size: 1rem;
-      line-height: 1.5;
+      font-size: 0.95rem;
+      line-height: 1.45;
       color: #555;
     }
 
@@ -207,36 +217,39 @@
       background: linear-gradient(135deg, var(--soft-orange), var(--accent));
       color: white;
       border: none;
-      padding: 12px 26px;
-      font-size: 1rem;
+      padding: 12px 22px;
+      font-size: 0.95rem;
       font-weight: bold;
       border-radius: 50px;
       cursor: pointer;
+      width: 100%;
+      max-width: 260px;
       transition: transform 0.2s;
-      box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3);
+      box-shadow: 0 4px 12px rgba(230, 126, 34, 0.25);
     }
 
-    .btn-surprise:hover {
-      transform: scale(1.05);
+    .btn-surprise:active {
+      transform: scale(0.97);
     }
 
     .secret-message {
       display: none;
-      margin-top: 18px;
-      padding: 14px;
+      margin-top: 14px;
+      padding: 12px;
       background: #e8f8f5;
       border-radius: 12px;
       color: #16a085;
+      font-size: 0.9rem;
       font-weight: 500;
-      animation: fadeIn 0.5s ease;
+      line-height: 1.4;
+      animation: fadeIn 0.4s ease;
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
+      from { opacity: 0; transform: translateY(8px); }
       to { opacity: 1; transform: translateY(0); }
     }
   </style>
-  <!-- Librería de Confeti -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 </head>
 <body>
@@ -247,7 +260,7 @@
       <div class="flap"></div>
       <div class="stamp">🐾</div>
     </div>
-    <p class="click-hint">✉️ ¡Tenés una cartita! Tocá para abrir</p>
+    <p class="click-hint">✉️️ ¡Tenés una cartita! Tocá para abrir</p>
   </div>
 
   <!-- VISTA 2: TARJETA DE FELICITACIONES -->
@@ -276,7 +289,7 @@
     <button class="btn-surprise" onclick="celebrateMore()">¡Un mensaje de Budín! ✨</button>
 
     <div id="secretMessage" class="secret-message">
-      🐾 "Miau... Prometo vigilar la cuna y ser el mejor hermano mayor" – Atte: Budín 🍞🧡
+      🐾 "Miau... Prometo vigilar la cuna y ser el mejor hermano mayor" – Att: Budín 🍞🧡
     </div>
   </div>
 
@@ -285,30 +298,27 @@
       const wrapper = document.getElementById('envelopeWrapper');
       const container = document.getElementById('cardContainer');
 
-      // Animación de apertura del sobre
       wrapper.classList.add('open');
 
-      // Lluvia de confeti
       setTimeout(() => {
         confetti({
-          particleCount: 100,
-          spread: 80,
+          particleCount: 70,
+          spread: 60,
           origin: { y: 0.6 }
         });
-      }, 300);
+      }, 250);
 
-      // Ocultar sobre y mostrar tarjeta
       setTimeout(() => {
         wrapper.style.display = 'none';
         container.style.display = 'block';
-      }, 700);
+      }, 600);
     }
 
     function celebrateMore() {
       confetti({
-        particleCount: 100,
-        spread: 100,
-        origin: { y: 0.5 }
+        particleCount: 90,
+        spread: 80,
+        origin: { y: 0.6 }
       });
 
       document.getElementById('secretMessage').style.display = 'block';
