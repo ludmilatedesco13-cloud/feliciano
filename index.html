@@ -3,14 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>¡Bienvenido Feliciano! 🐾👶</title>
+  <title>¡Una sorpresa para Feliciano! 🐾👶</title>
   <style>
     :root {
-      --bg-color: #fff9f2;
+      --bg-color: #fcf4ec;
       --card-bg: #ffffff;
-      --primary: #f39c12;
       --accent: #e67e22;
-      --soft-blue: #a8d8ea;
+      --soft-orange: #ffbe76;
+      --envelope-color: #f7d794;
+      --envelope-flap: #f5cd79;
       --text-color: #4a4a4a;
     }
 
@@ -32,9 +33,95 @@
       overflow-x: hidden;
     }
 
+    /* VISTA 1: EL SOBRE / CARTITA */
+    .envelope-wrapper {
+      position: relative;
+      cursor: pointer;
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+
+    .envelope-wrapper:hover {
+      transform: scale(1.03);
+    }
+
+    .envelope {
+      width: 300px;
+      height: 200px;
+      background: var(--envelope-color);
+      border-radius: 12px;
+      position: relative;
+      box-shadow: 0 10px 25px rgba(230, 126, 34, 0.2);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 2px solid #f3a683;
+    }
+
+    /* Solapa del sobre */
+    .flap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 0;
+      border-left: 150px solid transparent;
+      border-right: 150px solid transparent;
+      border-top: 110px solid var(--envelope-flap);
+      transform-origin: top;
+      transition: transform 0.5s ease;
+      z-index: 3;
+    }
+
+    /* Sello con patita */
+    .stamp {
+      position: absolute;
+      z-index: 4;
+      background: var(--accent);
+      color: white;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.5rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      top: 85px;
+    }
+
+    .click-hint {
+      margin-top: 25px;
+      font-weight: 600;
+      color: var(--accent);
+      font-size: 1.1rem;
+      animation: pulse 1.5s infinite alternate;
+    }
+
+    @keyframes pulse {
+      from { opacity: 0.6; transform: translateY(0); }
+      to { opacity: 1; transform: translateY(-5px); }
+    }
+
+    /* Animación al abrir */
+    .envelope-wrapper.open .flap {
+      transform: rotateX(180deg);
+      z-index: 1;
+    }
+
+    .envelope-wrapper.open {
+      animation: fadeOut 0.6s forwards 0.4s;
+    }
+
+    @keyframes fadeOut {
+      to { opacity: 0; transform: scale(0.8); display: none; }
+    }
+
+    /* VISTA 2: TARJETA INTERIOR */
     .container {
+      display: none;
       background: var(--card-bg);
-      max-width: 480px;
+      max-width: 460px;
       width: 100%;
       border-radius: 24px;
       padding: 32px 24px;
@@ -42,9 +129,14 @@
       box-shadow: 0 10px 30px rgba(243, 156, 18, 0.15);
       border: 3px solid #ffe5d9;
       position: relative;
+      animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
     }
 
-    /* Iconos/Decoraciones flotantes */
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.5) translateY(50px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
     .floating-icon {
       font-size: 1.8rem;
       position: absolute;
@@ -60,7 +152,7 @@
 
     h1 {
       color: var(--accent);
-      font-size: 1.8rem;
+      font-size: 1.7rem;
       margin-bottom: 8px;
     }
 
@@ -70,10 +162,10 @@
       margin-bottom: 20px;
     }
 
-    /* Ilustración del gato Houdini */
+    /* Ilustración de Budín */
     .cat-illustration {
-      width: 160px;
-      height: 160px;
+      width: 150px;
+      height: 150px;
       margin: 0 auto 20px;
       background: #ffeaa7;
       border-radius: 50%;
@@ -82,6 +174,7 @@
       align-items: center;
       position: relative;
       box-shadow: inset 0 0 15px rgba(0,0,0,0.05);
+      border: 3px solid #f8c291;
     }
 
     .cat-avatar {
@@ -91,17 +184,16 @@
 
     .baby-props {
       position: absolute;
-      bottom: 10px;
-      right: 15px;
-      font-size: 2rem;
+      bottom: 5px;
+      right: 10px;
+      font-size: 2.2rem;
     }
 
-    /* Mensaje Principal */
     .card-message {
       background: #fff0f5;
       border-radius: 16px;
       padding: 18px;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
       border: 1px dashed #ffb6c1;
     }
 
@@ -111,30 +203,27 @@
       color: #555;
     }
 
-    /* Botón Interactivo */
     .btn-surprise {
-      background: linear-gradient(135deg, var(--primary), var(--accent));
+      background: linear-gradient(135deg, var(--soft-orange), var(--accent));
       color: white;
       border: none;
-      padding: 14px 28px;
+      padding: 12px 26px;
       font-size: 1rem;
       font-weight: bold;
       border-radius: 50px;
       cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
+      transition: transform 0.2s;
       box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3);
     }
 
     .btn-surprise:hover {
       transform: scale(1.05);
-      box-shadow: 0 6px 20px rgba(230, 126, 34, 0.4);
     }
 
-    /* Modal / Mensaje secreto */
     .secret-message {
       display: none;
-      margin-top: 20px;
-      padding: 15px;
+      margin-top: 18px;
+      padding: 14px;
       background: #e8f8f5;
       border-radius: 12px;
       color: #16a085;
@@ -147,12 +236,22 @@
       to { opacity: 1; transform: translateY(0); }
     }
   </style>
-  <!-- Script para el confeti -->
+  <!-- Librería de Confeti -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 </head>
 <body>
 
-  <div class="container">
+  <!-- VISTA 1: CARTITA CERRADA -->
+  <div class="envelope-wrapper" id="envelopeWrapper" onclick="openEnvelope()">
+    <div class="envelope">
+      <div class="flap"></div>
+      <div class="stamp">🐾</div>
+    </div>
+    <p class="click-hint">✉️ ¡Tenés una cartita! Tocá para abrir</p>
+  </div>
+
+  <!-- VISTA 2: TARJETA DE FELICITACIONES -->
+  <div class="container" id="cardContainer">
     <span class="floating-icon icon-1">🍼</span>
     <span class="floating-icon icon-2">🧸</span>
 
@@ -160,49 +259,59 @@
     <p class="subtitle">¡Bienvenido Feli al mundo! 💛</p>
 
     <div class="cat-illustration">
-      <span class="cat-avatar">🐱 Orange Houdini</span>
-      <span class="baby-props">👶</span>
+      <span class="cat-avatar">🐱</span>
+      <span class="baby-props">🍼</span>
     </div>
 
     <div class="card-message">
       <p>
-        <strong>Houdini</strong> ya está preparando sus patrullajes para cuidar al nuevo integrante de la familia. 🐾
+        <strong>Budín</strong> ya estuvo practicando para cuidar al nuevo integrante de la casa. 🐾
       </p>
       <br/>
       <p>
-        Les deseamos lo mejor en esta hermosa etapa de pañales, mamaderas y mucho amor.
+        Les deseamos lo mejor en esta etapa hermosa llena de amor, mamaderas y momentos inolvidables.
       </p>
     </div>
 
-    <button class="btn-surprise" onclick="celebrate()">¡Apretar acá! ✨</button>
+    <button class="btn-surprise" onclick="celebrateMore()">¡Un mensaje de Budín! ✨</button>
 
     <div id="secretMessage" class="secret-message">
-      🐾 "Miau! Prometo compartir mis juguetes y hacerle compañía siempre" – Att: Houdini 🧡
+      🐾 "Miau... Prometo vigilar la cuna y ser el mejor hermano mayor" – Att: Budín 🍞🧡
     </div>
   </div>
 
   <script>
-    // Tirar confeti automáticamente al cargar
-    window.addEventListener('DOMContentLoaded', () => {
-      confetti({
-        particleCount: 80,
-        spread: 70,
-        origin: { y: 0.6 }
-      });
-    });
+    function openEnvelope() {
+      const wrapper = document.getElementById('envelopeWrapper');
+      const container = document.getElementById('cardContainer');
 
-    // Función al hacer clic en el botón
-    function celebrate() {
-      // Disparar más confeti
+      // Animación de apertura del sobre
+      wrapper.classList.add('open');
+
+      // Lluvia de confeti
+      setTimeout(() => {
+        confetti({
+          particleCount: 100,
+          spread: 80,
+          origin: { y: 0.6 }
+        });
+      }, 300);
+
+      // Ocultar sobre y mostrar tarjeta
+      setTimeout(() => {
+        wrapper.style.display = 'none';
+        container.style.display = 'block';
+      }, 700);
+    }
+
+    function celebrateMore() {
       confetti({
-        particleCount: 120,
+        particleCount: 100,
         spread: 100,
         origin: { y: 0.5 }
       });
 
-      // Mostrar mensaje interactivo de Houdini
-      const msg = document.getElementById('secretMessage');
-      msg.style.display = 'block';
+      document.getElementById('secretMessage').style.display = 'block';
     }
   </script>
 </body>
